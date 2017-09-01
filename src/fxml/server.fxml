@@ -39,3 +39,27 @@
 
 
 </BorderPane>
+
+
+
+<!--<center>-->
+<!--<AnchorPane prefHeight="544.0" prefWidth="610.0" BorderPane.alignment="CENTER">-->
+    <!--<children>-->
+        <!--<Label layoutX="9.0" layoutY="6.0" prefHeight="17.0" prefWidth="124.0" text="Event log: " />-->
+        <!--<TextArea fx:id="serverLogs" editable="false" layoutX="9.0" layoutY="29.0" prefHeight="246.0" prefWidth="487.0" wrapText="true"/>-->
+        <!--<Label layoutX="9.0" layoutY="286.0" prefHeight="17.0" prefWidth="124.0" text="Messages:  " />-->
+        <!--<TextArea fx:id="comments" editable="false" layoutX="9.0" layoutY="311.0" prefHeight="193.0" prefWidth="487.0" wrapText="true" />-->
+    <!--</children>-->
+<!--</AnchorPane>-->
+
+<!--</center>-->
+<!--<bottom>-->
+<!--<AnchorPane prefHeight="90.0" prefWidth="597.0" BorderPane.alignment="CENTER">-->
+    <!--<children>-->
+        <!--<Label prefHeight="17.0" prefWidth="124.0" text="Enter commands:" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="0.0" />-->
+        <!--<CustomTextField fx:id="enterMessage" onKeyPressed="#handleKeyPressed" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="370.0" AnchorPane.rightAnchor="214.0" />-->
+        <!--<Button fx:id="btnSend" layoutX="417.0" layoutY="26.0" onAction="#sendCommand" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" text="send" AnchorPane.rightAnchor="110.0" />-->
+        <!--&lt;!&ndash;<Button fx:id="btnSend" layoutX="387.0" layoutY="26.0" onAction="#sendCommand" text="%send" mnemonicParsing="false"   AnchorPane.rightAnchor="12.0"  />&ndash;&gt;-->
+    <!--</children>-->
+<!--</AnchorPane>-->
+<!--</bottom>-->

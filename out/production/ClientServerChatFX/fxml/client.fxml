@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
+
+<?import javafx.scene.control.Label?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="530.0" minWidth="510.0" prefHeight="530.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ClientController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Exit" onAction="#handleExit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" onAction="#onAbout"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <AnchorPane prefHeight="530.0" prefWidth="521.0" BorderPane.alignment="CENTER">
+            <children>
+                <TextArea fx:id="commentLogs" editable="false" layoutX="9.0" layoutY="14.0" prefHeight="387.0" prefWidth="510.0" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="21.0" AnchorPane.bottomAnchor="12.0"  AnchorPane.topAnchor="12.0"/>
+            </children>
+        </AnchorPane>
+
+    </center>
+    <bottom>
+        <AnchorPane prefHeight="80.0" prefWidth="517.0" BorderPane.alignment="CENTER_LEFT">
+            <children>
+                <Label  prefHeight="17.0" prefWidth="124.0" text="Enter comments:" AnchorPane.topAnchor="0.0"  AnchorPane.leftAnchor="14.0" />
+                <CustomTextField fx:id="enterMessage" onKeyPressed="#handleKeyPressed" layoutX="22.0" layoutY="26.0" prefHeight="25.0" prefWidth="370.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="111.0" />
+                <Button fx:id="btnSend"   layoutX="417.0" layoutY="26.0" onAction="#sendCommand" mnemonicParsing="false"  prefHeight="20.0" prefWidth="70.0" text="send"  AnchorPane.rightAnchor="23.0" />
+                <!--<Button fx:id="btnSend" layoutX="387.0" layoutY="26.0" onAction="#sendCommand" text="%send" mnemonicParsing="false"   AnchorPane.rightAnchor="12.0"  />-->
+            </children>
+        </AnchorPane>
+    </bottom>
+
+</BorderPane>
