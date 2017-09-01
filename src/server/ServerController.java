@@ -126,7 +126,9 @@ class ServerThread implements Runnable {
         }
         catch(IOException ex) {
             Platform.runLater(()->serverLogs.appendText("MainClient " + clientNumber +" (username: "+username+") " + " has terminated. "+"\n"));
-            server.addComment("User: "+username+" " + " has left the chat. ");   // show messages in the client log
+            if(username!=null){ // if user click cancel button before login - do not show in the comments chat log
+                server.addComment("User: "+username+" " + " has left the chat. ");   // show messages in the client log
+            }
         }
     }
 }
