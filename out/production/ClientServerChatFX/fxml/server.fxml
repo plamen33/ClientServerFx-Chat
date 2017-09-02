@@ -6,60 +6,61 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="555.0" minWidth="500" prefHeight="555.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
+<?import javafx.scene.control.ListView?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="500" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Exit" onAction="#handleExit" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" onAction="#onAbout"/>
+                        <MenuItem mnemonicParsing="false" onAction="#onAbout" text="About" />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
     </top>
     <center>
-        <AnchorPane prefHeight="544.0" prefWidth="490.0" BorderPane.alignment="CENTER" >
+        <AnchorPane prefHeight="544.0" prefWidth="490.0" BorderPane.alignment="CENTER">
             <children>
                 <Label layoutX="14.0" layoutY="3.0" prefHeight="24.0" prefWidth="124.0" text="Event log: " />
-                <TextArea fx:id="serverLogs" editable="false" layoutX="9.0" layoutY="33.0" prefHeight="512.0" prefWidth="500.0" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="21.0"  AnchorPane.topAnchor="30.0" AnchorPane.bottomAnchor="30.0"/>
-
+                <TextArea fx:id="serverLogs" editable="false" layoutX="9.0" layoutY="33.0" prefHeight="217.0" prefWidth="333.0" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="30.0" />
+                <Label layoutX="14.0" layoutY="252.0" prefHeight="20.0" prefWidth="124.0" text="Message log:  " />
+                <TextArea fx:id="comments" editable="false" layoutX="9.0" layoutY="21.0" prefHeight="281.0" prefWidth="500.0" wrapText="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="280.0" />
+            <TitledPane animated="true" layoutX="271.0" layoutY="27.0" text="User list"  AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="510.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="27.0" >
+              <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <children>
+                          <ListView fx:id="userList" layoutX="5.0" prefHeight="187.0" prefWidth="200.0" />
+                      </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
             </children>
         </AnchorPane>
     </center>
-
+    <bottom>
+        <AnchorPane prefHeight="77.0" prefWidth="490.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label prefHeight="17.0" prefWidth="124.0" text="Enter commands:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="0.0" />
+                <CustomTextField fx:id="enterMessage" layoutX="14.0" layoutY="26.0" onKeyPressed="#handleKeyPressed" prefHeight="25.0" prefWidth="210.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="111.0" />
+                <Button fx:id="btnSend" layoutX="417.0" layoutY="26.0" mnemonicParsing="false" onAction="#sendCommand" prefHeight="20.0" prefWidth="70.0" text="send" AnchorPane.rightAnchor="23.0" />
+            </children>
+        </AnchorPane>
+    </bottom>
 
 </BorderPane>
-
-
-
-<!--<center>-->
-<!--<AnchorPane prefHeight="544.0" prefWidth="610.0" BorderPane.alignment="CENTER">-->
-    <!--<children>-->
-        <!--<Label layoutX="9.0" layoutY="6.0" prefHeight="17.0" prefWidth="124.0" text="Event log: " />-->
-        <!--<TextArea fx:id="serverLogs" editable="false" layoutX="9.0" layoutY="29.0" prefHeight="246.0" prefWidth="487.0" wrapText="true"/>-->
-        <!--<Label layoutX="9.0" layoutY="286.0" prefHeight="17.0" prefWidth="124.0" text="Messages:  " />-->
-        <!--<TextArea fx:id="comments" editable="false" layoutX="9.0" layoutY="311.0" prefHeight="193.0" prefWidth="487.0" wrapText="true" />-->
-    <!--</children>-->
-<!--</AnchorPane>-->
-
-<!--</center>-->
-<!--<bottom>-->
-<!--<AnchorPane prefHeight="90.0" prefWidth="597.0" BorderPane.alignment="CENTER">-->
-    <!--<children>-->
-        <!--<Label prefHeight="17.0" prefWidth="124.0" text="Enter commands:" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="0.0" />-->
-        <!--<CustomTextField fx:id="enterMessage" onKeyPressed="#handleKeyPressed" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="370.0" AnchorPane.rightAnchor="214.0" />-->
-        <!--<Button fx:id="btnSend" layoutX="417.0" layoutY="26.0" onAction="#sendCommand" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" text="send" AnchorPane.rightAnchor="110.0" />-->
-        <!--&lt;!&ndash;<Button fx:id="btnSend" layoutX="387.0" layoutY="26.0" onAction="#sendCommand" text="%send" mnemonicParsing="false"   AnchorPane.rightAnchor="12.0"  />&ndash;&gt;-->
-    <!--</children>-->
-<!--</AnchorPane>-->
-<!--</bottom>-->

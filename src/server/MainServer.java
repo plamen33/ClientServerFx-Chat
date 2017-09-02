@@ -16,8 +16,8 @@ public class MainServer extends Application {
 
         stage.setScene(scene);
         stage.setTitle("ServerFX");
-        stage.setMinHeight(577);
-        stage.setMinWidth(519);
+        stage.setMinHeight(637);
+        stage.setMinWidth(757);
         stage.setOnCloseRequest(event->System.exit(0));  /// to completely shutdown the Server
         stage.show();
     }
