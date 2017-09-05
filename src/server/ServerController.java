@@ -7,26 +7,21 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 
-public class ServerController implements Initializable {
+public class ServerController  {
 
     @FXML
     private TextArea serverLogs;
@@ -37,10 +32,89 @@ public class ServerController implements Initializable {
     @FXML
     private ListView<String> userList;
     private ObservableList<String> users;
-
+    @FXML
+    private Button btnStartServer;
+    @FXML
+    private Button btnStopServer;
 
     private int clientNumber = 0;
     private Server server = new Server();
+    private ServerSocket serverSocket;
+
+    private ArrayList<Thread> clientsConnected;
+    private Thread newThread;
+
+
+
+    @FXML
+    public void startServer() {
+
+        class NewThread extends Thread {
+
+            public void run() {
+                try {
+                    // Create a server socket
+                    //ServerSocket serverSocket = new ServerSocket(8000);
+                    serverSocket = new ServerSocket(8000);
+                    Platform.runLater(  // use Platform.runLater() to run the clear button implement. from the thread otherwise it will throw
+                            () -> {
+                                users = FXCollections.observableArrayList();
+                                userList.setItems(users);
+                                // clear button implementation from controlfx for the enterMessage CustomTextField
+                                try {
+                                    Method m = TextFields.class.getDeclaredMethod("setupClearButtonField", TextField.class, ObjectProperty.class);
+                                    m.setAccessible(true);
+                                    m.invoke(null, enterMessage, enterMessage.rightProperty());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    );
+                    //// end of  clear button implementation
+
+                    while (true) {
+                        // Listen for a new connection request
+                        Socket socket = serverSocket.accept();
+                        clientNumber++;
+
+                        // Create and start a new thread for the connection
+                        new Thread(new ServerThread(socket, server, serverLogs, comments, clientNumber, users)).start();
+                    }
+
+                } catch (IOException ex) {
+                    System.err.println(ex);
+                }
+            }
+        }
+
+        newThread = new NewThread();
+        newThread.start();
+
+        btnStartServer.setDisable(true);
+        btnStopServer.setDisable(false);
+    }
+    @FXML
+    public void stopServer() {
+        try{
+            newThread.interrupt();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        try{
+            serverSocket.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        users.removeAll();
+        userList.setItems(null);
+
+        btnStopServer.setDisable(true);
+        btnStartServer.setDisable(false);
+
+    }
 
     //// when you click on send button send the comment to the chat
     @FXML
@@ -61,40 +135,6 @@ public class ServerController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // server = new Server();
-
-        new Thread( () -> {
-            try {
-                // Create a server socket
-                ServerSocket serverSocket = new ServerSocket(8000);
-                // clear button implementation from controlfx for the enterMessage CustomTextField
-                users = FXCollections.observableArrayList();
-                userList.setItems(users);
-                try {
-                    Method m = TextFields.class.getDeclaredMethod("setupClearButtonField", TextField.class, ObjectProperty.class);
-                    m.setAccessible(true);
-                    m.invoke(null, enterMessage, enterMessage.rightProperty());
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                //// end of  clear button implementation
-
-                while (true) {
-                    // Listen for a new connection request
-                    Socket socket = serverSocket.accept();
-                    clientNumber++;
-
-                    // Create and start a new thread for the connection
-                    new Thread(new ServerThread(socket,server,serverLogs,comments, clientNumber, users)).start();
-                }
-            }
-            catch(IOException ex) {
-                System.err.println(ex);
-            }
-        }).start();
-    }
     @FXML
     public void handleExit(){
         Platform.exit();
@@ -171,8 +211,8 @@ class ServerThread implements Runnable {
             }
         }
         catch(IOException ex) {
-            Platform.runLater(()->serverLogs.appendText("MainClient " + clientNumber +" (username: "+username+") " + " has terminated. "+"\n"));
-
+            Platform.runLater(()->serverLogs.appendText("MainClient " + clientNumber +" (username: "+username+") " + " has terminated. "+"\n") );
+            Platform.runLater(()->users.remove(username));
             if(username!=null){ // if user click cancel button before login - do not show in the comments chat log
                 Platform.runLater(()->comments.appendText("User: "+username+" " + " has left the building. "+"\n"));
                 server.addComment("User: "+username+" " + " has left the chat. ");   // show messages in the client log

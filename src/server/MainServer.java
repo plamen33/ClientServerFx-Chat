@@ -4,19 +4,26 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class MainServer extends Application {
 
+    private BorderPane serverLayout;
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/server.fxml"));
 
-        Scene scene = new Scene(root, 300, 275);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/server.fxml"));
+//        ServerController serverController = new ServerController();
+//        loader.setController(serverController);
+        serverLayout = (BorderPane) loader.load();
+        Scene scene = new Scene(serverLayout);
 
         stage.setScene(scene);
         stage.setTitle("ServerFX");
-        stage.setMinHeight(637);
+        stage.setMinHeight(700);
         stage.setMinWidth(757);
         stage.setOnCloseRequest(event->System.exit(0));  /// to completely shutdown the Server
         stage.show();

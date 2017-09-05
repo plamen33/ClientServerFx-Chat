@@ -35,13 +35,18 @@
         </MenuBar>
     </top>
     <center>
-        <AnchorPane prefHeight="544.0" prefWidth="490.0" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="500.0" prefWidth="490.0" BorderPane.alignment="CENTER">
             <children>
-                <Label layoutX="14.0" layoutY="3.0" prefHeight="24.0" prefWidth="124.0" text="Event log: " />
-                <TextArea fx:id="serverLogs" editable="false" layoutX="9.0" layoutY="33.0" prefHeight="217.0" prefWidth="333.0" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="30.0" />
-                <Label layoutX="14.0" layoutY="252.0" prefHeight="20.0" prefWidth="124.0" text="Message log:  " />
-                <TextArea fx:id="comments" editable="false" layoutX="9.0" layoutY="21.0" prefHeight="281.0" prefWidth="500.0" wrapText="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="280.0" />
-            <TitledPane animated="true" layoutX="271.0" layoutY="27.0" text="User list"  AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="510.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="27.0" >
+                <Label layoutX="14.0" layoutY="10.0" prefHeight="24.0" prefWidth="124.0" text="Server control: " />
+                <Button fx:id="btnStartServer"  onAction="#startServer" layoutX="219.0" layoutY="19.0" mnemonicParsing="false"  prefHeight="25.0" prefWidth="90.0" text="Start" />
+                <Button fx:id="btnStopServer" onAction="#stopServer" disable="true" layoutX="329.0" layoutY="19.0" mnemonicParsing="false"  prefHeight="25.0" prefWidth="90.0" text="Stop" />
+                <!--<Button fx:id="btnStartServer" layoutX="219.0" layoutY="19.0" mnemonicParsing="false" onAction="#startServer" prefHeight="25.0" prefWidth="90.0" text="Start" />-->
+                <!--<Button fx:id="btnStopServer" disable="true" layoutX="329.0" layoutY="19.0" mnemonicParsing="false" onAction="#stopServer" prefHeight="25.0" prefWidth="90.0" text="Stop" />-->
+                <Label layoutX="14.0" layoutY="37.0" prefHeight="24.0" prefWidth="124.0" text="Event log: " />
+                <TextArea fx:id="serverLogs" editable="false" layoutX="9.0" layoutY="33.0" prefHeight="217.0" prefWidth="333.0" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="63.0" />
+                <Label layoutX="14.0" layoutY="290.0" prefHeight="20.0" prefWidth="124.0" text="Message log:  " />
+                <TextArea fx:id="comments" editable="false" layoutX="9.0" layoutY="21.0" prefHeight="281.0" prefWidth="500.0" wrapText="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="312.0" />
+            <TitledPane animated="true" layoutX="271.0" layoutY="27.0" text="User list"  AnchorPane.bottomAnchor="280.0" AnchorPane.leftAnchor="510.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="62.0" >
               <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
