@@ -110,6 +110,11 @@ class ClientThread implements Runnable {
     /** Run a thread */
     public void run() {
         while(true) {
+            // if server connection is stopped with the button
+            if(gateway.getCommentCount() == -1){
+                Platform.runLater(() -> textArea.appendText("...\n.......\n............\nServer connection was lost. \nRestart the client to try a new connection to chat."));
+                break;
+            }
             if(gateway.getCommentCount() > commentIndex) {
                 String newComment = gateway.getComment(commentIndex);
                 Platform.runLater(()->textArea.appendText(newComment + "\n")); ///show the comment in the Client text area window
