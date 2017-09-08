@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
 
+<?import javafx.scene.text.Text?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="530.0" minWidth="510.0" prefHeight="530.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ClientController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
@@ -49,6 +50,8 @@
                         </AnchorPane>
                     </content>
                 </TitledPane>
+                <Text fx:id="userText" text="User:" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="14" />
+                <Text fx:id="username"  AnchorPane.rightAnchor="17.0"  AnchorPane.topAnchor="12" textAlignment="LEFT" />
             </children>
         </AnchorPane>
 

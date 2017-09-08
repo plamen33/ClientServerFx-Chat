@@ -20,6 +20,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -32,6 +36,10 @@ public class ClientController implements Initializable {
     @FXML
     private ListView<String> userList;       // user list for Client
     private ObservableList<String> users;    // user list for Client
+    @FXML
+    private Text userText; // text User: before logged user username
+    @FXML
+    private Text username; // logged user
 
     //// when you click on send button send the comment to the chat
     @FXML
@@ -53,6 +61,12 @@ public class ClientController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         gateway = new ClientNetworkGateway(commentLogs);
 
+        // front end for User: - this is the text before logged user
+        userText.setFont(Font.font(null, FontWeight.BOLD, 14));
+        /// username of logged user text front end
+        username.setFill(Color.LIMEGREEN);
+        username.setFont(Font.font(null, FontWeight.BOLD, 16));
+
         // Put up a dialog to get a username from the user
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Start MainClient");
@@ -64,8 +78,13 @@ public class ClientController implements Initializable {
         result.ifPresent(name -> {     /// if one does not input name then assign Guest as MainClient username
             if (name.equals("")){
                 gateway.sendUsername("Guest");
+                Platform.runLater(() -> { username.setText("Guest");  });
             }
-            else {gateway.sendUsername(name);}
+            else {gateway.sendUsername(name);
+                if(name.length() > 16){name = name.substring(0,12)+"...";}
+                String loggedUserName = name;
+                Platform.runLater(() -> { username.setText(loggedUserName);  });
+            }
         });
         if(result.get() == null){Platform.exit();};
 
@@ -98,7 +117,6 @@ public class ClientController implements Initializable {
         alert.setTitle("About");
         alert.setContentText("MainClient Server FX version: Basic\nVersion Release: 30.08.2017\nDevelopment platform: Java\nDeveloper: Plamen Petkov\n\nPowered by Java 8");
         alert.show();
-
     }
 }
 
@@ -114,7 +132,7 @@ class ClientThread implements Runnable {
         this.gateway = gateway;
         this.textArea = textArea;
         this.commentIndex = 0;
-        this.users = users;///// added now !!!!!!!!!!!
+        this.users = users;// Client user list
     }
 
     /** Run a thread */
