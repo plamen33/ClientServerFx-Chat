@@ -94,4 +94,18 @@ public class ClientNetworkGateway {
         }
         return comment;
     }
+    // method to get the users from Server
+    public String getUsersFromServer(){
+        outputToServer.println("code_get_users_from_server");
+        outputToServer.flush();
+        String usersString = "";
+        try {
+            usersString = inputFromServer.readLine();
+
+        } catch (IOException ex) {
+            Platform.runLater(() -> textArea.appendText("Error in getUsersFromServer: " + ex.toString() + "\n"));
+        }
+        return usersString;
+    }
+
 }

@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import javafx.application.Platform;
@@ -21,7 +22,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
-import sun.rmi.runtime.NewThreadAction;
 
 public class ServerController  {
 
@@ -57,7 +57,6 @@ public class ServerController  {
                   try {
 
                       // Create a server socket
-                      //ServerSocket serverSocket = new ServerSocket(8000);
                       serverSocket = new ServerSocket(8000);
                       Platform.runLater(  // use Platform.runLater() to run the clear button implement. from the thread otherwise it will throw
                               () -> {
@@ -127,24 +126,18 @@ public class ServerController  {
     }
     @FXML
     public void stopServer() {
-//        stopServerCommand = true;
         try{
             for (int i = 0; i < clientThreads.size(); ) {
-                //Thread.sleep(333);
+
                 clientThreads.get(i).shutdown();
                 System.out.println("Client thread is :" + clientThreads.get(i));
                 clientThreads.remove(i);
-//                threads.get(i).stop();
-//                threads.remove(i);
             }
             clientThreads.stream().forEach(entry-> clientThreads.remove(0));
             System.out.println("Checking clientThreads size" + clientThreads.size());
-//            Thread.sleep(333);
             newThread.shutdown();
 
             System.out.println("Is NewThread still alive: " +newThread.isAlive());
-           // newThread.stop();
-
 
         }
         catch (Exception e){
@@ -160,7 +153,6 @@ public class ServerController  {
 
         users.removeAll();
         Platform.runLater(() ->  users.removeAll());
-
 
         btnStopServer.setDisable(true);
         btnStartServer.setDisable(false);
@@ -225,7 +217,6 @@ class ServerThread implements Runnable {
         this.comments = comments;
         this.clientNumber = clientNumber;
         this.users = users;
-//        this.stopServerCommand = stopServerCommand;
     }
 
     public void run() {
@@ -269,6 +260,16 @@ class ServerThread implements Runnable {
                                 int commentIndex = Integer.parseInt(inputFromClient.readLine());
                                 outputToClient.println(server.getComment(commentIndex));
                                 outputToClient.flush();
+                                break;
+                            }
+                            case "code_get_users_from_server":{ // here we send the users list from server to the client
+                                /// we get all the users from users list and convert them in a string separated by commas
+                                String usersString = (Arrays.asList(users)).toString().replace("[[", "").replace("]]","").replace(" ","");
+                                ///send users String to the Client
+                                System.out.println("Test print of String of users in server: " + usersString);
+                                outputToClient.println(usersString);
+                                outputToClient.flush();
+                                break;
                             }
                         }
                         if (stopRequested) {
@@ -279,6 +280,11 @@ class ServerThread implements Runnable {
                 } catch (IOException ex) {
                     Platform.runLater(() -> serverLogs.appendText("MainClient " + clientNumber + " (username: " + username + ") " + " has terminated. " + "\n"));
                     Platform.runLater(() -> users.remove(username));
+                    //  testint remove users from client list
+                    String usersString = (Arrays.asList(users)).toString().replace("[[", "").replace("]]","").replace(" ","");
+                    outputToClient.println(usersString);
+                    outputToClient.flush();
+                    /////////////////
                     if (username != null) { // if user click cancel button before login - do not show in the comments chat log
                         Platform.runLater(() -> comments.appendText("User: " + username + " " + " has left the chat. " + "\n"));
                         server.addComment("User: " + username + " " + " has left the chat. ");   // show messages in the client log
@@ -291,8 +297,6 @@ class ServerThread implements Runnable {
                     outputToClient.close();
                     break;
                 }
-
             }// end of while true
-
     } // end of run
 }
