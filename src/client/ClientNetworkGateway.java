@@ -17,13 +17,14 @@ public class ClientNetworkGateway {
     private BufferedReader inputFromServer;
     private PrintWriter outputToServer;
     private TextArea textArea;
+    private Socket socket;
 
     // Establish the connection to the client.
     public ClientNetworkGateway(TextArea textArea) {
         this.textArea = textArea;
         try {
             // Create a socket to connect to the client
-            Socket socket = new Socket("localhost", 8000);
+            socket = new Socket("localhost", 8000);
 
             // Create an output stream to send data to the server
             outputToServer = new PrintWriter(socket.getOutputStream());
@@ -106,6 +107,21 @@ public class ClientNetworkGateway {
             Platform.runLater(() -> textArea.appendText("Error in getUsersFromServer: " + ex.toString() + "\n"));
         }
         return usersString;
+    }
+    public void sendRemoveUserToServer(String username){
+        outputToServer.println("code_send_username_to_remove");
+        outputToServer.println(username);
+        outputToServer.flush();
+    }
+    public void closeGateway(){
+        try {
+            socket.close();
+            inputFromServer.close();
+            outputToServer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Closing socket exception in ClientNetworkGateway class");
+        }
     }
 
 }

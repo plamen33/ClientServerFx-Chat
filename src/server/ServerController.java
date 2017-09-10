@@ -100,7 +100,6 @@ public class ServerController  {
                 if(stopRequested){
                     try{
                         serverSocket.close();
-                        System.out.println("socket closed");
                     }
                     catch (Exception e){
                         e.printStackTrace();
@@ -137,7 +136,7 @@ public class ServerController  {
             System.out.println("Checking clientThreads size" + clientThreads.size());
             newThread.shutdown();
 
-            System.out.println("Is NewThread still alive: " +newThread.isAlive());
+//            System.out.println("Is NewThread still alive: " +newThread.isAlive());
 
         }
         catch (Exception e){
@@ -223,14 +222,12 @@ class ServerThread implements Runnable {
 
             while(true) {
                 try {
-                    System.out.println("ServerThread stoprequested value is " + stopRequested);
                     // Create reading and writing streams to and from the Client
                     inputFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     outputToClient = new PrintWriter(socket.getOutputStream());
 
                     // read from the client and take actions all the time
                     while (true) {
-//                System.out.println(stopServerCommand);
                         // Receive request code from the client
                         String request = inputFromClient.readLine();
                         // Process request
@@ -264,12 +261,19 @@ class ServerThread implements Runnable {
                             }
                             case "code_get_users_from_server":{ // here we send the users list from server to the client
                                 /// we get all the users from users list and convert them in a string separated by commas
-                                String usersString = (Arrays.asList(users)).toString().replace("[[", "").replace("]]","").replace(" ","");
+                                String usersString = (Arrays.asList(users)).toString().replace("[[", "").replace("]]","");
                                 ///send users String to the Client
                                 System.out.println("Test print of String of users in server: " + usersString);
                                 outputToClient.println(usersString);
                                 outputToClient.flush();
                                 break;
+                            }
+                            case "code_send_username_to_remove":{
+                                throw new IOException();
+//                                String usernameToRemove = inputFromClient.readLine();
+//                                System.out.println("UserName to remove: " + usernameToRemove);
+//                                Platform.runLater(() -> users.remove(usernameToRemove));
+
                             }
                         }
                         if (stopRequested) {

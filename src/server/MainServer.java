@@ -16,11 +16,12 @@ public class MainServer extends Application {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/server.fxml"));
+
 //        ServerController serverController = new ServerController();
 //        loader.setController(serverController);
         serverLayout = (BorderPane) loader.load();
         Scene scene = new Scene(serverLayout);
-
+        scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm()); //++
         stage.setScene(scene);
         stage.setTitle("ServerFX");
         stage.setMinHeight(700);

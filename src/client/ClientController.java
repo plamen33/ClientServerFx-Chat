@@ -1,5 +1,6 @@
 package client;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,8 +27,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
+import server.ServerController;
 
-public class ClientController implements Initializable {
+public class ClientController{
     private ClientNetworkGateway gateway;
     @FXML
     private TextArea commentLogs;
@@ -40,6 +42,16 @@ public class ClientController implements Initializable {
     private Text userText; // text User: before logged user username
     @FXML
     private Text username; // logged user
+    @FXML
+    private Button buttonLogin;
+    @FXML
+    private Button buttonLogout;
+    @FXML
+    private CustomTextField inputUsername;
+    private LinkedList<ClientThread> clientThreads = new LinkedList<>();
+    private Thread newThread;
+    private boolean isLogout = false;
+    private String userName;
 
     //// when you click on send button send the comment to the chat
     @FXML
@@ -57,8 +69,11 @@ public class ClientController implements Initializable {
             enterMessage.clear(); // when type from client clear the text box
         }
     }
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+
+    @FXML
+    public void loginClient() {
+
+
         gateway = new ClientNetworkGateway(commentLogs);
 
         // front end for User: - this is the text before logged user
@@ -67,30 +82,25 @@ public class ClientController implements Initializable {
         username.setFill(Color.LIMEGREEN);
         username.setFont(Font.font(null, FontWeight.BOLD, 16));
 
-        // Put up a dialog to get a username from the user
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Start MainClient");
-        dialog.setHeaderText(null);
-        dialog.setContentText("Enter username:");
+        String currentUserName = inputUsername.getText();
+        currentUserName = currentUserName.replace(",", " "); // eliminame possible commas to avoid visual hack of the client
+        userName = currentUserName; // set the String username which belongs to the class
+        if (currentUserName.equals("")){
+            gateway.sendUsername("Guest");
+            Platform.runLater(() -> { username.setText("Guest");  });
+        }
+        else {gateway.sendUsername(currentUserName); // send username of Client to Server
+            if(currentUserName.length() > 16){currentUserName = currentUserName.substring(0,12)+"...";}
+            String loggedUserName = currentUserName;
+            Platform.runLater(() -> { username.setText(loggedUserName);  });
+        }
 
-        Optional<String> result = dialog.showAndWait();
-
-        result.ifPresent(name -> {     /// if one does not input name then assign Guest as MainClient username
-            if (name.equals("")){
-                gateway.sendUsername("Guest");
-                Platform.runLater(() -> { username.setText("Guest");  });
-            }
-            else {gateway.sendUsername(name);
-                if(name.length() > 16){name = name.substring(0,12)+"...";}
-                String loggedUserName = name;
-                Platform.runLater(() -> { username.setText(loggedUserName);  });
-            }
-        });
-        if(result.get() == null){Platform.exit();};
 
         /// Client user list initialization
         users = FXCollections.observableArrayList();
         userList.setItems(users);
+
+
 
         // clear button implementation from controlfx for the enterMessage CustomTextField
         try {
@@ -102,9 +112,38 @@ public class ClientController implements Initializable {
         }
         //// end of  clear button implementation
 
-        // Start the Client main thread
-        new Thread(new ClientThread (gateway,commentLogs, users)).start();
+
+        ClientThread clientThread = new ClientThread (gateway,commentLogs, users, isLogout);
+        newThread = new Thread(clientThread);
+        newThread.start();
+        clientThreads.add(clientThread);
+
+
+
+
+        buttonLogin.setDisable(true);
+        buttonLogout.setDisable(false);
     }
+    @FXML
+    public void logoutClient() {
+        /// need to do this if we start the client for more than one time -> to clear everything
+        users.clear();
+        commentLogs.clear();
+        /////////////
+        gateway.sendRemoveUserToServer(userName);
+
+        try{
+            clientThreads.get(0).shutdown();
+            newThread.stop();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        gateway.closeGateway();
+        buttonLogin.setDisable(false);
+        buttonLogout.setDisable(true);
+    }
+
     @FXML
     public void handleExit(){
         Platform.exit();
@@ -120,30 +159,38 @@ public class ClientController implements Initializable {
     }
 }
 
+
+
 class ClientThread implements Runnable {
     private ClientNetworkGateway gateway; // Gateway to the client
     private TextArea textArea; // Where to display comments
     private int commentIndex; // Index of the comment from commentsList in Server class
     private ObservableList<String> users; // Client user list
     private boolean runFirstTime = false;
+    private boolean isLogout;
 
     /** Construct a thread */
-    public ClientThread (ClientNetworkGateway gateway,TextArea textArea, ObservableList<String> users ) {
+    public ClientThread (ClientNetworkGateway gateway,TextArea textArea, ObservableList<String> users, boolean isLogout ) {
         this.gateway = gateway;
         this.textArea = textArea;
         this.commentIndex = 0;
         this.users = users;// Client user list
+        this.isLogout = isLogout;
     }
+    public void shutdown() {
+        isLogout = true;
+    }
+
 
     /** Run a thread */
     public void run() {
 
-        while(true) {
+        while(!isLogout) {
             if(!runFirstTime) {
                 runFirstTime =true;
                 String usersString = gateway.getUsersFromServer();
                 String[] arrayWithUsers = usersString.split(",");
-                Arrays.asList(arrayWithUsers).stream().forEach(user -> { Platform.runLater(() -> { users.add(user);}); });
+                Arrays.asList(arrayWithUsers).stream().forEach(user -> { Platform.runLater(() -> { users.add(user);});});
                 // the same below in conventional way
 //                for (int i = 0; i < arrayWithUsers.length; i++) {
 //                    String user = arrayWithUsers[i];
@@ -182,6 +229,6 @@ class ClientThread implements Runnable {
                     System.out.println("test print for client exception");
                 }
             }
-        }
-    }
+        }// end of while cycle
+    }//end of run
 }

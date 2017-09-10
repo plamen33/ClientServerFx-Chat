@@ -17,7 +17,7 @@ public class MainClient extends Application {
 
             stage.setScene(scene);
             stage.setTitle("ClientFX");
-            stage.setMinHeight(570);
+            stage.setMinHeight(670);
             stage.setMinWidth(757);
             stage.setOnCloseRequest(event -> System.exit(0));
             stage.show();

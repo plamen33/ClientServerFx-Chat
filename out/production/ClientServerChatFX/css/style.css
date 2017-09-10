@@ -1,0 +1,27 @@
+.root{
+    -fx-background-color: #c9fa9b;
+}
+.label{
+    -fx-text-fill: steelblue;
+    -fx-font-weight: bold
+}
+.button{
+    -fx-background-color: #57d539;
+    -fx-text-fill: #353532;
+    -fx-background-radius: 4;
+}
+.button-blue{
+    -fx-background-color: #7cafc2;
+    -fx-text-fill: steelblue;
+    -fx-background-radius: 4;
+}
+
+.button:hover {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-text-fill: #ccacd7;
+    -fx-background-radius: 4;
+}
+
+#bold-label{
+    -fx-font-weight: bold;
+}

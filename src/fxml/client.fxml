@@ -39,9 +39,12 @@
     <center>
         <AnchorPane prefHeight="530.0" prefWidth="521.0" BorderPane.alignment="CENTER">
             <children>
-                <TextArea fx:id="commentLogs" editable="false" layoutX="9.0" layoutY="14.0" prefHeight="387.0" prefWidth="510.0" wrapText="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="227.0" AnchorPane.topAnchor="12.0" />
+                <CustomTextField fx:id="inputUsername" layoutX="286.0" layoutY="10.0" />
+                <Button fx:id="buttonLogin" layoutX="453.0" layoutY="10.0" mnemonicParsing="false" onAction="#loginClient" prefHeight="25.0" prefWidth="79.0" text="Login" />
+                <Button fx:id="buttonLogout" disable="true" layoutX="541.0" layoutY="10.0" mnemonicParsing="false" onAction="#logoutClient" prefHeight="25.0" prefWidth="79.0" text="Logout" />
+                <TextArea fx:id="commentLogs" editable="false" layoutX="9.0" layoutY="14.0" prefHeight="387.0" prefWidth="510.0" wrapText="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="227.0" AnchorPane.topAnchor="53.0" />
                 <!--<TitledPane animated="true" layoutX="271.0" layoutY="27.0" text="User list" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="510.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="12.0" >-->
-                <TitledPane animated="true" layoutX="271.0" layoutY="27.0" text="User list" AnchorPane.bottomAnchor="120.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="43.0">
+                <TitledPane animated="true" layoutX="271.0" layoutY="27.0" text="User list" AnchorPane.bottomAnchor="120.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="83.0">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
@@ -50,8 +53,8 @@
                         </AnchorPane>
                     </content>
                 </TitledPane>
-                <Text fx:id="userText" text="User:" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="14" />
-                <Text fx:id="username"  AnchorPane.rightAnchor="17.0"  AnchorPane.topAnchor="12" textAlignment="LEFT" />
+                <Text fx:id="userText" text="User:" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="53" />
+                <Text fx:id="username"  AnchorPane.rightAnchor="17.0"  AnchorPane.topAnchor="53" textAlignment="LEFT" />
             </children>
         </AnchorPane>
 
