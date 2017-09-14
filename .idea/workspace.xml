@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/ClientServerChatFX/images/chat.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/ClientServerChatFX/images/chat3.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/ClientServerChatFX/images/chat5.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/ClientServerChatFX/images/globe_green.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/ClientServerChatFX/images/network1.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/ClientServerChatFX/images/rocket.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/images/chat.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/images/chat3.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/images/chat5.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/images/globe_green.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/images/network1.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/images/rocket.ico" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ClientServerChatFX/fxml/client.fxml" afterPath="$PROJECT_DIR$/out/production/ClientServerChatFX/fxml/client.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/ClientController.java" afterPath="$PROJECT_DIR$/src/client/ClientController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fxml/client.fxml" afterPath="$PROJECT_DIR$/src/fxml/client.fxml" />
-    </list>
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="" />
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -407,7 +390,7 @@
     <property name="dynamic.classpath" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="D:/Downloads/Java/Small Java Projects/JavaFX/10 Java FX Game Breakout like udemy eduonix/Breakout" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
@@ -945,16 +928,16 @@
       <workItem from="1504475683317" duration="812000" />
       <workItem from="1504541522182" duration="78608000" />
       <workItem from="1505367546344" duration="43000" />
-      <workItem from="1505429039890" duration="296000" />
+      <workItem from="1505429039890" duration="704000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="107328000" />
+    <option name="totallyTimeSpent" value="107736000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
