@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -27,6 +28,7 @@ public class MainServer extends Application {
         stage.setMinHeight(700);
         stage.setMinWidth(757);
         stage.setOnCloseRequest(event->System.exit(0));  /// to completely shutdown the Server
+        stage.getIcons().add(new Image(getClass().getResource("../images/chat1.png").toExternalForm()));
         stage.show();
     }
 

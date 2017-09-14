@@ -1,33 +1,25 @@
 package client;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.fxml.Initializable;
-
-/**
- * Java is the best, who's the next
- */
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.*;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
-import server.ServerController;
+
 
 public class ClientController{
     private ClientNetworkGateway gateway;
@@ -52,6 +44,8 @@ public class ClientController{
     private Thread newThread;
     private boolean isLogout = false;
     private String userName;
+    @FXML
+    private CustomTextField hostIP;
 
     //// when you click on send button send the comment to the chat
     @FXML
@@ -73,13 +67,20 @@ public class ClientController{
     @FXML
     public void loginClient() {
 
+        String hostIPAddress = hostIP.getText();
+        if(hostIPAddress.equals("") || hostIPAddress == null){
+            hostIPAddress = "localhost";
+        }
+        gateway = new ClientNetworkGateway(commentLogs, hostIPAddress);
 
-        gateway = new ClientNetworkGateway(commentLogs);
+        // display a login entry in the comment Log:
+        String entryMessage = "Successful connection. Address: " + gateway.getInternetAddress() + " port number: " + gateway.getSocketPort();
+        displayAtCommentLog(entryMessage);
 
         // front end for User: - this is the text before logged user
         userText.setFont(Font.font(null, FontWeight.BOLD, 14));
         /// username of logged user text front end
-        username.setFill(Color.LIMEGREEN);
+        username.setFill(Color.DARKGREEN);
         username.setFont(Font.font(null, FontWeight.BOLD, 16));
 
         String currentUserName = inputUsername.getText();
@@ -117,10 +118,12 @@ public class ClientController{
         newThread = new Thread(clientThread);
         newThread.start();
         clientThreads.add(clientThread);
-
-
-
-
+        // disable input fields
+//        hostIP.setEditable(false);
+//        inputUsername.setEditable(false);
+        hostIP.setDisable(true);
+        inputUsername.setDisable(true);
+        // set button outlook
         buttonLogin.setDisable(true);
         buttonLogout.setDisable(false);
     }
@@ -142,6 +145,9 @@ public class ClientController{
         gateway.closeGateway();
         buttonLogin.setDisable(false);
         buttonLogout.setDisable(true);
+        // enable input fields
+        hostIP.setDisable(false);
+        inputUsername.setDisable(false);
     }
 
     @FXML
@@ -152,10 +158,25 @@ public class ClientController{
     @FXML
     private void onAbout(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("MainClient FX JavaFX Application");
+        alert.setHeaderText("Client FX JavaFX Application");
         alert.setTitle("About");
-        alert.setContentText("MainClient Server FX version: Basic\nVersion Release: 30.08.2017\nDevelopment platform: Java\nDeveloper: Plamen Petkov\n\nPowered by Java 8");
+        alert.setContentText("Client FX version: Advanced\nVersion Release: 14.09.2017\nDevelopment platform: Java\nDeveloper: Plamen Petkov\n\nPowered by Java 8");
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/images/chat.png")); // add icon to the alert window
         alert.show();
+        ///stage.getIcons().add(new Image(getClass().getResource("../images/chat.png").toExternalForm()));
+    }
+    @FXML
+    private void onHelp(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("ClientFX Help");
+        alert.setTitle("Help");
+        alert.setContentText("In Host IP field type IP address of the Server: \nExamples:\nlocalhost\n12.7.87.571 (sample IP address of server machine)\nMYCOMP (example domain name of Server machine)");
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/images/chat.png")); // add icon to the alert window
+        alert.show();
+    }
+
+    private void displayAtCommentLog(String message) {
+        commentLogs.appendText(message + "\n"); // append to the ServerChatArea
     }
 }
 

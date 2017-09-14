@@ -12,4 +12,7 @@ public class Server {
     public void addComment(String comment) { listOfComments.add(comment); }
     public int getSize() { return listOfComments.size(); }
     public String getComment(int commentIndex ) { return listOfComments.get(commentIndex ); }
+    public void clearComments(){
+        listOfComments.clear();
+    }
 }

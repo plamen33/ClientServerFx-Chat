@@ -17,11 +17,93 @@
 }
 
 .button:hover {
-    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
-    -fx-text-fill: #ccacd7;
+    -fx-background-color: #9ddb33;
+    -fx-text-fill: #695df2;
     -fx-background-radius: 4;
 }
 
 #bold-label{
     -fx-font-weight: bold;
+}
+
+.menu-bar{
+    -fx-background-color: #83c73e;
+    -fx-border-color:  #c7e293;
+    -fx-border-width: 2
+
+
+}
+
+.menu-bar .label {
+    -fx-font-size: 14 pt;
+    -fx-font-family: "Leelawadee";
+    -fx-text-fill: #525af2;
+
+
+}
+
+.menu:hover {
+    -fx-background-color: #c9ea8c;
+}
+menu .label{     -fx-text-fill: black;}
+
+/*.menu-item {*/
+/*!*    -fx-skin: "com.sun.javafx.scene.control.skin.MenuItemSkin";*!*/
+/*-fx-background-color: transparent;*/
+/*-fx-padding: 0.333333em 0.41777em 0.333333em 0.41777em;  !* 4 5 4 5 *!*/
+/*}*/
+
+/*.titled-pane {*/
+/*-fx-skin: "com.sun.javafx.scene.control.skin.TitledPaneSkin";*/
+/*-fx-text-fill: -fx-text-base-color;*/
+/*}*/
+
+
+.titled-pane > .title {
+    -fx-background-color: #9ddb33;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+    -fx-padding: 0.1333337em 0.833333em 0.25em 0.833333em; /* 2 10 3 10 */
+}
+
+.titled-pane > *.content {
+    -fx-background-color: #c7fab2;
+    -fx-background-insets: 0, 0 1 1 1;
+    -fx-padding: 0.167em;
+}
+
+
+
+#clearLogs {
+    -fx-color:black;
+    -fx-fill:blue;
+    -fx-padding:4.3px;
+    -fx-background-color:#ffd75b;
+    -fx-font-size: 12px;
+    -fx-background-radius: 27px;
+}
+
+#clearLogs:pressed, #clearLogs:default:hover:pressed{
+    -fx-background-color: rgba(180,180,180,0.7);
+}
+
+#clearLogs:hover{
+    -fx-background-color: rgba(235,235,235,0.7);
+}
+
+#clearLogs:focused{
+    -fx-background-color: rgba(205,205,205,0.7);
+
+}
+#clearLogs:default:hover {
+    -fx-background-color: derive(-fx-focus-color,30%);
+}
+#clearLogs:disabled, #clearLogs:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+#clearLogs:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
 }

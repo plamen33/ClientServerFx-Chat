@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MainClient extends Application {
@@ -14,12 +15,14 @@ public class MainClient extends Application {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("../fxml/client.fxml"));
             Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm()); //++
 
             stage.setScene(scene);
             stage.setTitle("ClientFX");
             stage.setMinHeight(670);
             stage.setMinWidth(757);
             stage.setOnCloseRequest(event -> System.exit(0));
+            stage.getIcons().add(new Image(getClass().getResource("../images/chat.png").toExternalForm()));
             stage.show();
         }
         catch (Exception e){

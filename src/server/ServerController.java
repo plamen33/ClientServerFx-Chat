@@ -7,10 +7,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
+
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
@@ -18,8 +16,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -38,6 +38,8 @@ public class ServerController  {
     private Button btnStartServer; // button to start the server
     @FXML
     private Button btnStopServer;  // button to stop the server
+    @FXML
+    private Button clearLogs;  // button to stop the server
 
     private int clientNumber = 0;  //  number of the Client connected to the Server
     private Server server = new Server();
@@ -46,57 +48,60 @@ public class ServerController  {
     private NewThread newThread; // this is the main server thread
     private volatile boolean stopRequested = false;
     ArrayList<ServerThread> clientThreads = new ArrayList<>();
-    ArrayList<Thread> threads = new ArrayList<>();
+   // ArrayList<Thread> threads = new ArrayList<>();
+
+
+
 
     class NewThread extends Thread {
 
         public void run() {
 
             while(true) {
-                System.out.println("NewThread stoprequested value is " + stopRequested);
-                  try {
 
-                      // Create a server socket
-                      serverSocket = new ServerSocket(8000);
-                      Platform.runLater(  // use Platform.runLater() to run the clear button implement. from the thread otherwise it will throw
-                              () -> {
-                                  users = FXCollections.observableArrayList();
-                                  userList.setItems(users);
-                                  // clear button implementation from controlfx for the enterMessage CustomTextField
-                                  try {
-                                      Method m = TextFields.class.getDeclaredMethod("setupClearButtonField", TextField.class, ObjectProperty.class);
-                                      m.setAccessible(true);
-                                      m.invoke(null, enterMessage, enterMessage.rightProperty());
-                                  } catch (Exception e) {
-                                      e.printStackTrace();
-                                  }
-                              }
-                      );
-                      //// end of  clear button implementation
+                try {
 
-                      while (true) {
-                          // Listen for a new connection request
-                          Socket socket = serverSocket.accept();
-                          clientNumber++;
-                          System.out.println("test how often New Thread new ServerThread is opened");
-                          // Create and start a new thread for the connection
+                    // Create a server socket
+                    serverSocket = new ServerSocket(7000);
+                    Platform.runLater(  // use Platform.runLater() to run the clear button implement. from the thread otherwise it will throw
+                            () -> {
+                                users = FXCollections.observableArrayList();
+                                userList.setItems(users);
+                                // clear button implementation from controlfx for the enterMessage CustomTextField
+                                try {
+                                    Method m = TextFields.class.getDeclaredMethod("setupClearButtonField", TextField.class, ObjectProperty.class);
+                                    m.setAccessible(true);
+                                    m.invoke(null, enterMessage, enterMessage.rightProperty());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    );
+                    //// end of  clear button implementation
+
+                    while (true) {
+                        // Listen for a new connection request
+                        Socket socket = serverSocket.accept();
+                        clientNumber++;
+
+                        // Create and start a new thread for the connection
 //                        new Thread(new ServerThread(socket, server, serverLogs, comments, clientNumber, users)).start();
-                          ServerThread st = new ServerThread(socket, server, serverLogs, comments, clientNumber, users);
-                          Thread t = new Thread(st);
-                          t.start();
-                          //threads.add(t);
-                          clientThreads.add(st);
-                          if(stopRequested){
-                              socket.close();
-                              st.shutdown();
-                             // t.stop();
-                              break;
-                          }
-                      }
+                        ServerThread st = new ServerThread(socket, server, serverLogs, comments, clientNumber, users);
+                        Thread t = new Thread(st);
+                        t.start();
+                        //threads.add(t);
+                        clientThreads.add(st);
+                        if(stopRequested){
+                            socket.close();
+                            st.shutdown();
+                            // t.stop();
+                            break;
+                        }
+                    }
 
-                  } catch (IOException ex) {
-                      System.err.println(ex);
-                  }
+                } catch (IOException ex) {
+                    System.err.println(ex);
+                }
                 if(stopRequested){
                     try{
                         serverSocket.close();
@@ -120,6 +125,7 @@ public class ServerController  {
         newThread = new NewThread();
         newThread.start();
 
+        clearLogs.setDisable(true);
         btnStartServer.setDisable(true);
         btnStopServer.setDisable(false);
     }
@@ -129,11 +135,9 @@ public class ServerController  {
             for (int i = 0; i < clientThreads.size(); ) {
 
                 clientThreads.get(i).shutdown();
-                System.out.println("Client thread is :" + clientThreads.get(i));
                 clientThreads.remove(i);
             }
             clientThreads.stream().forEach(entry-> clientThreads.remove(0));
-            System.out.println("Checking clientThreads size" + clientThreads.size());
             newThread.shutdown();
 
 //            System.out.println("Is NewThread still alive: " +newThread.isAlive());
@@ -144,7 +148,7 @@ public class ServerController  {
         }
         try{
             serverSocket.close();
-            System.out.println("socket closed");
+            //System.out.println("socket closed");
         }
         catch (Exception e){
             e.printStackTrace();
@@ -153,6 +157,7 @@ public class ServerController  {
         users.removeAll();
         Platform.runLater(() ->  users.removeAll());
 
+        clearLogs.setDisable(false);
         btnStopServer.setDisable(true);
         btnStartServer.setDisable(false);
 
@@ -178,6 +183,26 @@ public class ServerController  {
     }
 
     @FXML
+    public void clearEventMessageLogs(){
+
+        clearLogsAlert();
+    }
+
+    public void clearLogsAlert(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Clear Event and Comment logs");
+        alert.setHeaderText("Clear server logs : ");
+        alert.setContentText("Are you sure? \nPress OK to confirm, or Cancel to back out");
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/images/warning.png"));
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent()&& (result.get() == ButtonType.OK)){
+            comments.clear();    // clear on the server side
+            serverLogs.clear();  // clear on the server side window
+            server.clearComments(); // now clear the source of the comment logs for clients
+        }
+    }
+
+    @FXML
     public void handleExit(){
         Platform.exit();
         System.exit(0);
@@ -185,12 +210,13 @@ public class ServerController  {
     @FXML
     private void onAbout(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("ServerFX JavaFX Application");
+        alert.setHeaderText("Server FX JavaFX Application");
         alert.setTitle("About");
-        alert.setContentText("ClientServer FX Application version: Basic\nVersion Release: 30.08.2017\nDevelopment platform: Java\nDeveloper: Plamen Petkov\n\nPowered by Java 8");
+        alert.setContentText("Server FX version: Advanced\nVersion Release: 14.09.2017\nDevelopment platform: Java\nDeveloper: Plamen Petkov\n\nPowered by Java 8");
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/images/chat1.png")); // add icon to the alert window
         alert.show();
-
     }
+
 }
 
 class ServerThread implements Runnable {
@@ -220,87 +246,82 @@ class ServerThread implements Runnable {
 
     public void run() {
 
-            while(true) {
-                try {
-                    // Create reading and writing streams to and from the Client
-                    inputFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    outputToClient = new PrintWriter(socket.getOutputStream());
+        while(true) {
+            try {
+                // Create reading and writing streams to and from the Client
+                inputFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                outputToClient = new PrintWriter(socket.getOutputStream());
 
-                    // read from the client and take actions all the time
-                    while (true) {
-                        // Receive request code from the client
-                        String request = inputFromClient.readLine();
-                        // Process request
-                        switch (request) {
-                            case "code_username": {
-                                username = inputFromClient.readLine();
-                                serverLogs.appendText("Starting thread for MainClient " + clientNumber + " at " + new Date() + "  " + "Username: " + username + '\n');
-                                // we add the user to the user list :
-                                Platform.runLater(() -> users.add(username));
-                                //users.add(username);
-                                break;
-                            }
-                            case "code_send_comment": {
-                                String comment = inputFromClient.readLine();
-                                server.addComment(username + "> " + comment);   // show messages in the client log
-                                comments.appendText(username + "> " + comment + "\n"); /// show messages in the server message log
-
-                                break;
-                            }
-                            case "code_comments_count": {
-                                outputToClient.println(server.getSize());
-
-                                outputToClient.flush();
-                                break;
-                            }
-                            case "code_get_comment": {
-                                int commentIndex = Integer.parseInt(inputFromClient.readLine());
-                                outputToClient.println(server.getComment(commentIndex));
-                                outputToClient.flush();
-                                break;
-                            }
-                            case "code_get_users_from_server":{ // here we send the users list from server to the client
-                                /// we get all the users from users list and convert them in a string separated by commas
-                                String usersString = (Arrays.asList(users)).toString().replace("[[", "").replace("]]","");
-                                ///send users String to the Client
-                                System.out.println("Test print of String of users in server: " + usersString);
-                                outputToClient.println(usersString);
-                                outputToClient.flush();
-                                break;
-                            }
-                            case "code_send_username_to_remove":{
-                                throw new IOException();
-//                                String usernameToRemove = inputFromClient.readLine();
-//                                System.out.println("UserName to remove: " + usernameToRemove);
-//                                Platform.runLater(() -> users.remove(usernameToRemove));
-
-                            }
-                        }
-                        if (stopRequested) {
+                // read from the client and take actions all the time
+                while (true) {
+                    // Receive request code from the client
+                    String request = inputFromClient.readLine();
+                    // Process request
+                    switch (request) {
+                        case "code_username": {
+                            username = inputFromClient.readLine();
+                            serverLogs.appendText("Starting thread for MainClient " + clientNumber + " at " + new Date() + "  " + "Username: " + username + '\n');
+                            // we add the user to the user list :
+                            Platform.runLater(() -> users.add(username));
+                            //users.add(username);
                             break;
                         }
-                    }// end of while
+                        case "code_send_comment": {
+                            String comment = inputFromClient.readLine();
+                            server.addComment(username + "> " + comment);   // show messages in the client log
+                            comments.appendText(username + "> " + comment + "\n"); /// show messages in the server message log
 
-                } catch (IOException ex) {
-                    Platform.runLater(() -> serverLogs.appendText("MainClient " + clientNumber + " (username: " + username + ") " + " has terminated. " + "\n"));
-                    Platform.runLater(() -> users.remove(username));
-                    //  testint remove users from client list
-                    String usersString = (Arrays.asList(users)).toString().replace("[[", "").replace("]]","").replace(" ","");
-                    outputToClient.println(usersString);
-                    outputToClient.flush();
-                    /////////////////
-                    if (username != null) { // if user click cancel button before login - do not show in the comments chat log
-                        Platform.runLater(() -> comments.appendText("User: " + username + " " + " has left the chat. " + "\n"));
-                        server.addComment("User: " + username + " " + " has left the chat. ");   // show messages in the client log
+                            break;
+                        }
+                        case "code_comments_count": {
+                            outputToClient.println(server.getSize());
+
+                            outputToClient.flush();
+                            break;
+                        }
+                        case "code_get_comment": {
+                            int commentIndex = Integer.parseInt(inputFromClient.readLine());
+                            outputToClient.println(server.getComment(commentIndex));
+                            outputToClient.flush();
+                            break;
+                        }
+                        case "code_get_users_from_server":{ // here we send the users list from server to the client
+                            /// we get all the users from users list and convert them in a string separated by commas
+                            String usersString = (Arrays.asList(users)).toString().replace("[[", "").replace("]]","");
+                            ///send users String to the Client
+                            outputToClient.println(usersString);
+                            outputToClient.flush();
+                            break;
+                        }
+                        case "code_send_username_to_remove":{
+                            throw new IOException();
+                        }
                     }
-                    break;
-                }// end of catch
-                if (stopRequested) {
-                    try {inputFromClient.close();}
-                    catch (Exception e){}
-                    outputToClient.close();
-                    break;
+                    if (stopRequested) {
+                        break;
+                    }
+                }// end of while
+
+            } catch (Exception e) {
+                Platform.runLater(() -> serverLogs.appendText("MainClient " + clientNumber + " (username: " + username + ") " + " has terminated. " + "\n"));
+                Platform.runLater(() -> users.remove(username));
+                //  remove users from client list
+                String usersString = (Arrays.asList(users)).toString().replace("[[", "").replace("]]","").replace(" ","");
+                outputToClient.println(usersString);
+                outputToClient.flush();
+                /////////////////
+                if (username != null) { // if user click cancel button before login - do not show in the comments chat log
+                    Platform.runLater(() -> comments.appendText("User: " + username + " " + " has left the chat. " + "\n"));
+                    server.addComment("User: " + username + " " + " has left the chat. ");   // show messages in the client log
                 }
-            }// end of while true
+                break;
+            }// end of catch
+            if (stopRequested) {
+                try {inputFromClient.close();}
+                catch (Exception e){}
+                outputToClient.close();
+                break;
+            }
+        }// end of while true
     } // end of run
 }

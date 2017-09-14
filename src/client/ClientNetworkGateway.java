@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
@@ -20,11 +21,11 @@ public class ClientNetworkGateway {
     private Socket socket;
 
     // Establish the connection to the client.
-    public ClientNetworkGateway(TextArea textArea) {
+    public ClientNetworkGateway(TextArea textArea, String hostIPAddress) {
         this.textArea = textArea;
         try {
             // Create a socket to connect to the client
-            socket = new Socket("localhost", 8000);
+            socket = new Socket(hostIPAddress, 7000);
 
             // Create an output stream to send data to the server
             outputToServer = new PrintWriter(socket.getOutputStream());
@@ -33,7 +34,8 @@ public class ClientNetworkGateway {
             inputFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         } catch (IOException ex) {
-            Platform.runLater(() -> textArea.appendText("Exception in gateway constructor: " + ex.toString() + "\n"));
+            Platform.runLater(() -> textArea.appendText("Wrong host IP address, socket port number is unavailable or no server connection." + "\n"));
+//            Platform.runLater(() -> textArea.appendText("Exception in gateway constructor: " + ex.toString() + "\n"));
         }
     }
 
@@ -123,5 +125,10 @@ public class ClientNetworkGateway {
             System.out.println("Closing socket exception in ClientNetworkGateway class");
         }
     }
-
+    public String getInternetAddress(){
+        return socket.getInetAddress().toString();
+    }
+    public String getSocketPort(){
+        return socket.getPort() + "";
+    }
 }

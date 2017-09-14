@@ -23,14 +23,10 @@
                         <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete" />
-                    </items>
-                </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#onAbout" text="About" />
+                        <MenuItem mnemonicParsing="false" onAction="#onHelp" text="Help" />
                     </items>
                 </Menu>
             </menus>
@@ -39,9 +35,12 @@
     <center>
         <AnchorPane prefHeight="530.0" prefWidth="521.0" BorderPane.alignment="CENTER">
             <children>
-                <CustomTextField fx:id="inputUsername" layoutX="286.0" layoutY="10.0" />
-                <Button fx:id="buttonLogin" layoutX="453.0" layoutY="10.0" mnemonicParsing="false" onAction="#loginClient" prefHeight="25.0" prefWidth="79.0" text="Login" />
-                <Button fx:id="buttonLogout" disable="true" layoutX="541.0" layoutY="10.0" mnemonicParsing="false" onAction="#logoutClient" prefHeight="25.0" prefWidth="79.0" text="Logout" />
+                <Label layoutX="221.0" layoutY="14.0" text="Host IP:" AnchorPane.rightAnchor="565.0" />
+                <CustomTextField fx:id="hostIP" layoutX="283.0" layoutY="10.0"  AnchorPane.rightAnchor="410.0" text="SOFT-PC"/>
+                <Label layoutX="221.0" layoutY="14.0" text="Username:" AnchorPane.rightAnchor="340.0" />
+                <CustomTextField fx:id="inputUsername" layoutX="283.0" layoutY="10.0"  AnchorPane.rightAnchor="187.0"/>
+                <Button fx:id="buttonLogin" layoutX="453.0" layoutY="10.0" mnemonicParsing="false" onAction="#loginClient" prefHeight="25.0" prefWidth="79.0" text="Login" AnchorPane.rightAnchor="97.0" />
+                <Button fx:id="buttonLogout"  disable="true" layoutX="541.0" layoutY="10.0" mnemonicParsing="false" onAction="#logoutClient" prefHeight="25.0" prefWidth="79.0" text="Logout"  AnchorPane.rightAnchor="12.0"/>
                 <TextArea fx:id="commentLogs" editable="false" layoutX="9.0" layoutY="14.0" prefHeight="387.0" prefWidth="510.0" wrapText="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="227.0" AnchorPane.topAnchor="53.0" />
                 <!--<TitledPane animated="true" layoutX="271.0" layoutY="27.0" text="User list" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="510.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="12.0" >-->
                 <TitledPane animated="true" layoutX="271.0" layoutY="27.0" text="User list" AnchorPane.bottomAnchor="120.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="83.0">
