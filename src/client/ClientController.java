@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -211,7 +213,7 @@ class ClientThread implements Runnable {
                 runFirstTime =true;
                 String usersString = gateway.getUsersFromServer();
                 String[] arrayWithUsers = usersString.split(",");
-                Arrays.asList(arrayWithUsers).stream().forEach(user -> { Platform.runLater(() -> { users.add(user);});});
+                Arrays.asList(arrayWithUsers).stream().forEach(user -> { Platform.runLater(() -> { users.add(user.trim());});});
                 // the same below in conventional way
 //                for (int i = 0; i < arrayWithUsers.length; i++) {
 //                    String user = arrayWithUsers[i];
@@ -222,7 +224,7 @@ class ClientThread implements Runnable {
             }
             else{
                 String usersString = gateway.getUsersFromServer();
-                List<String> arrayWithUsers = new ArrayList<String>(Arrays.asList(usersString.split(",")));
+                List<String> arrayWithUsers = new ArrayList<String>(Arrays.asList(usersString.split(",")).stream().map(String::trim).collect(Collectors.toList()));
                 if(arrayWithUsers.size() != users.size()){
                     Platform.runLater(() -> {
                         users.clear();

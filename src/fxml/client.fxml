@@ -36,7 +36,7 @@
         <AnchorPane prefHeight="530.0" prefWidth="521.0" BorderPane.alignment="CENTER">
             <children>
                 <Label layoutX="221.0" layoutY="14.0" text="Host IP:" AnchorPane.rightAnchor="565.0" />
-                <CustomTextField fx:id="hostIP" layoutX="283.0" layoutY="10.0"  AnchorPane.rightAnchor="410.0" text="SOFT-PC"/>
+                <CustomTextField fx:id="hostIP" layoutX="283.0" layoutY="10.0"  AnchorPane.rightAnchor="410.0" text="localhost"/>
                 <Label layoutX="221.0" layoutY="14.0" text="Username:" AnchorPane.rightAnchor="340.0" />
                 <CustomTextField fx:id="inputUsername" layoutX="283.0" layoutY="10.0"  AnchorPane.rightAnchor="187.0"/>
                 <Button fx:id="buttonLogin" layoutX="453.0" layoutY="10.0" mnemonicParsing="false" onAction="#loginClient" prefHeight="25.0" prefWidth="79.0" text="Login" AnchorPane.rightAnchor="97.0" />
